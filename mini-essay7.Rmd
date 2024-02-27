@@ -1,0 +1,74 @@
+---
+title: "Impact of Data Processing Errors on Statistical Analysis"
+author: "Pu Yuan"
+date: "2024/2/25"
+output: pdf_document
+bibliography: ref.bib
+---
+
+```{r}
+#| echo: false
+#| warning: false
+#| message: false
+set.seed(123)
+original_data<-rnorm(1000, mean=1, sd=1)
+```
+
+```{r}
+#| echo: false
+#| warning: false
+#| message: false
+original_data[901:1000] <- original_data[1:100]
+```
+
+```{r}
+#| echo: false
+#| warning: false
+#| message: false
+neg_indices <- which(original_data<0)
+selected_indices <- sample(neg_indices, length(neg_indices)/2)
+original_data[selected_indices] <- original_data[selected_indices]
+```
+
+```{r}
+#| echo: false
+#| warning: false
+#| message: false
+decimal_adjust_indices<-which(original_data >1 & original_data <1.1)
+original_data[decimal_adjust_indices] <- original_data[decimal_adjust_indices]/10
+```
+
+```{r}
+#| echo: false
+#| warning: false
+#| message: false
+cleaned_mean <- mean(original_data)
+cleaned_mean
+t.test(original_data,
+      alternative = c("greater"),
+      mu = 0)
+```
+
+# Introduction
+
+In this analysis, we explored a dataset that was generated to simulate a series of errors that might occur in real-world data collection and processing. The objective was to understand the impact of these errors on statistical analyses, specifically on estimating the mean of the underlying data generating process. The data was initially generated to follow a normal distribution with a mean of 1 and a standard deviation of 1. However, due to instrument limitations and processing errors, the final dataset underwent significant alterations. These alterations included the overwriting of the last 100 observations due to memory limitations, changing half of the negative values to positive, and misadjusting the decimal places for values between 1 and 1.1.
+
+This paper we use R[@RCoreTeam] and R package states[@RStatsPackage]
+
+# Simulated Errors and Their Impacts
+
+Instrument Memory Limitation: The first 100 observations were repeated as the last 100 due to the instrument's memory limitation. This repetition artificially increased the sample's homogeneity, potentially biasing any analysis towards the characteristics of these 100 observations.
+
+Changing Negative Draws: By converting half of the negative observations to positive, the variability in the data was reduced, and the mean was artificially inflated. This action skewed the distribution of the data and misrepresented the underlying variability present in the original dataset.
+
+Decimal Place Adjustment: The misadjustment of decimal places for specific values led to a significant distortion of the data scale for a subset of observations. This error could severely impact the mean and variance estimates, leading to incorrect inferences about the data.
+
+# Mitigation Methods
+
+Perform Initial Checks: Before analysis, assess the data for basic quality indicators such as the range, distribution, and presence of expected patterns or values. This can help identify obvious issues such as duplicated data or unrealistic values.
+
+Check for Duplicates: Specifically look for duplicated records, which in this case could help identify the overwritten data points.
+
+Check Data Length: Ensure the dataset length matches the expected number of observations. A mismatch may indicate overwriting or data loss.
+
+# References
