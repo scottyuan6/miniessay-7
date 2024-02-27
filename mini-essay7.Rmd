@@ -1,7 +1,6 @@
 ---
 title: "Impact of Data Processing Errors on Statistical Analysis"
 author: "Pu Yuan"
-editor:"Yiyi Yao"
 date: "2024/2/25"
 output: pdf_document
 bibliography: ref.bib
@@ -39,16 +38,7 @@ decimal_adjust_indices<-which(original_data >1 & original_data <1.1)
 original_data[decimal_adjust_indices] <- original_data[decimal_adjust_indices]/10
 ```
 
-```{r}
-#| echo: false
-#| warning: false
-#| message: false
-cleaned_mean <- mean(original_data)
-cleaned_mean
-t.test(original_data,
-      alternative = c("greater"),
-      mu = 0)
-```
+
 
 # Introduction
 
@@ -63,6 +53,19 @@ Instrument Memory Limitation: The first 100 observations were repeated as the la
 Changing Negative Draws: By converting half of the negative observations to positive, the variability in the data was reduced, and the mean was artificially inflated. This action skewed the distribution of the data and misrepresented the underlying variability present in the original dataset.
 
 Decimal Place Adjustment: The misadjustment of decimal places for specific values led to a significant distortion of the data scale for a subset of observations. This error could severely impact the mean and variance estimates, leading to incorrect inferences about the data.
+
+Finally, we got the cleaned data and have 95% confidence level that the mean is greater than 0. The estimated mean value is 0.9921027.
+
+```{r}
+#| echo: false
+#| warning: false
+#| message: false
+cleaned_mean <- mean(original_data)
+cleaned_mean
+t.test(original_data,
+      alternative = c("greater"),
+      mu = 0)
+```
 
 # Mitigation Methods
 
