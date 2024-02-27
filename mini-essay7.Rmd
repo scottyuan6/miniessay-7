@@ -1,6 +1,7 @@
 ---
 title: "Impact of Data Processing Errors on Statistical Analysis"
 author: "Pu Yuan"
+editor:"Yiyi Yao"
 date: "2024/2/25"
 output: pdf_document
 bibliography: ref.bib
@@ -53,7 +54,7 @@ t.test(original_data,
 
 In this analysis, we explored a dataset that was generated to simulate a series of errors that might occur in real-world data collection and processing. The objective was to understand the impact of these errors on statistical analyses, specifically on estimating the mean of the underlying data generating process. The data was initially generated to follow a normal distribution with a mean of 1 and a standard deviation of 1. However, due to instrument limitations and processing errors, the final dataset underwent significant alterations. These alterations included the overwriting of the last 100 observations due to memory limitations, changing half of the negative values to positive, and misadjusting the decimal places for values between 1 and 1.1.
 
-This paper we use R[@RCoreTeam] and R package states[@RStatsPackage]
+This paper uses R[@RCoreTeam] and R package states[@RStatsPackage], and has been updated based on the feedback of Yiyi Yao.
 
 # Simulated Errors and Their Impacts
 
